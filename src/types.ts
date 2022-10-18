@@ -11,27 +11,21 @@ export type Name = Tagged<"Name", string>;
 
 export type HashHex = Tagged<"Hash", string>;
 
-export type FunctionId = Name;
-
-export const checkHashHex = (hash: string): hash is HashHex =>
-  new RegExp("^(0x)?[0-9a-f]{64}$", "i").test(hash);
+export type FunctionName = Name;
 
 export interface BlockInfoJson {
   block: BlockJson;
   hash: HashHex;
   height: number;
-  content: BlockContentJson;
   results: Option<BlockResultsJson[]>;
 }
 
 export interface BlockJson {
   time: string;
-  rand: string;
+  meta: string;
   prev: string;
   body: number[];
 }
-
-export type BlockContentJson = StatementJson[];
 
 export type StatementJson = Enum<StatementJson_Variants>;
 export interface StatementJson_Variants {
@@ -279,4 +273,13 @@ export interface Load {
 
 export interface Done {
   term: Term;
+}
+
+export interface StatementInfo {
+  tick: number;
+  mana: number;
+  space: number;
+  fun_count: number;
+  ctr_count: number;
+  reg_count: number;
 }
