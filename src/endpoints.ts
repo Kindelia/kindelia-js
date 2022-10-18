@@ -1,20 +1,18 @@
-import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
+import axios, { AxiosRequestConfig, AxiosPromise, Axios } from "axios";
 import { Option } from "rustie";
 
 import * as T from "./types";
 export * as types from "./types";
 
-type KindeliaPromise<T> = Promise<AxiosResponse<T>>;
-
-const publicAPI = async <T>(config: AxiosRequestConfig): KindeliaPromise<T> => {
+const publicAPI = async <T>(config: AxiosRequestConfig): AxiosPromise<T> => {
   return axios(config);
 };
 
 export const getStats = async (
   { nodeURL }: { nodeURL: string },
   requestConfig?: AxiosRequestConfig
-): KindeliaPromise<any> =>
-  publicAPI({
+): AxiosPromise<T.StatementInfo> =>
+  publicAPI<T.StatementInfo>({
     ...requestConfig,
     baseURL: `${nodeURL}/stats`,
   });
@@ -22,7 +20,7 @@ export const getStats = async (
 export const getBlocks = (
   { nodeURL }: { nodeURL: string },
   requestConfig?: AxiosRequestConfig
-): KindeliaPromise<T.BlockInfoJson[]> =>
+): AxiosPromise<T.BlockInfoJson[]> =>
   publicAPI<T.BlockInfoJson[]>({
     ...requestConfig,
     baseURL: `${nodeURL}/blocks`,
@@ -31,7 +29,7 @@ export const getBlocks = (
 export const getBlock = (
   { nodeURL, blockHashHex }: { nodeURL: string; blockHashHex: T.HashHex },
   requestConfig?: AxiosRequestConfig
-): KindeliaPromise<T.BlockInfoJson> =>
+): AxiosPromise<T.BlockInfoJson> =>
   publicAPI<Option<T.BlockInfoJson>>({
     ...requestConfig,
     baseURL: `${nodeURL}/blocks/${blockHashHex}`,
@@ -40,28 +38,28 @@ export const getBlock = (
 export const getFunctions = (
   { nodeURL }: { nodeURL: string },
   requestConfig?: AxiosRequestConfig
-): KindeliaPromise<T.Name[]> =>
+): AxiosPromise<T.Name[]> =>
   publicAPI<T.Name[]>({
     ...requestConfig,
     baseURL: `${nodeURL}/functions`,
   });
 
 export const getFunction = (
-  { nodeURL, functionId }: { nodeURL: string; functionId: T.FunctionId },
+  { nodeURL, functionName }: { nodeURL: string; functionName: T.FunctionName },
   requestConfig?: AxiosRequestConfig
-): KindeliaPromise<T.FuncJson> =>
+): AxiosPromise<T.FuncJson> =>
   publicAPI<Option<T.FuncJson>>({
     ...requestConfig,
-    baseURL: `${nodeURL}/functions/${functionId}`,
+    baseURL: `${nodeURL}/functions/${functionName}`,
   });
 
 export const getFunctionState = (
-  { nodeURL, functionId }: { nodeURL: string; functionId: T.FunctionId },
+  { nodeURL, functionName }: { nodeURL: string; functionName: T.FunctionName },
   requestConfig?: AxiosRequestConfig
-): KindeliaPromise<T.TermJson> =>
+): AxiosPromise<T.TermJson> =>
   publicAPI<T.TermJson>({
     ...requestConfig,
-    baseURL: `${nodeURL}/functions/${functionId}/state`,
+    baseURL: `${nodeURL}/functions/${functionName}/state`,
   });
 
 export const sendInteract = <T>(
@@ -72,13 +70,13 @@ export const sendInteract = <T>(
   }: {
     nodeURL: string;
     code: string;
-    isTest: boolean;
+    isTest?: boolean;
   },
   requestConfig?: AxiosRequestConfig
-): KindeliaPromise<T> =>
+): AxiosPromise<T> =>
   publicAPI<T>({
     ...requestConfig,
-    baseURL: `${nodeURL}/code` + (isTest ? "/test" : ""),
+    baseURL: `${nodeURL}/code/run` + (isTest ? "/test" : ""),
     method: "POST",
     data: code,
   });
