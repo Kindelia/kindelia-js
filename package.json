@@ -13,11 +13,17 @@
     "typescript": "4.8.4"
   },
   "license": "MIT",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
   "repository": "git@github.com:Kindelia/kindelia-js.git",
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
     "dev": "tsup src/index.ts --watch --format cjs,esm --dts",
-    "test": "ts-jest"
-  }
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:all": "jest --coverage",
+    "test:all:watch": "jest --coverage --watch"
+
+  },
+  "types": "dist/index.d.ts"
 }
