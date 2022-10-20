@@ -80,4 +80,20 @@ export const sendInteract = (
     method: "POST",
     data: code,
   });
-  
+
+// (async () => {
+//   const response = await sendInteract({
+//     nodeURL: "https://node-sfo3.testnet.kindelia.org",
+//     code: `
+//       run {
+//         ask state = (Call 'Fit' {Fit_Act_next #0});
+//         let parsed = (Fit_st_parse state);
+//         (Done parsed)
+//       }
+//     `,
+//   })
+// 
+//   response.data.slice(0, 1).map(block => {
+//     console.log(JSON.stringify(block))
+//   })
+// })()
