@@ -62,7 +62,7 @@ export const getFunctionState = (
     baseURL: `${nodeURL}/functions/${functionName}/state`,
   });
 
-export const sendInteract = <T>(
+export const sendInteract = (
   {
     nodeURL,
     code,
@@ -73,10 +73,11 @@ export const sendInteract = <T>(
     isTest?: boolean;
   },
   requestConfig?: AxiosRequestConfig
-): AxiosPromise<T> =>
-  publicAPI<T>({
+): AxiosPromise<T.BlockResultsJson[]> =>
+  publicAPI<T.BlockResultsJson[]>({
     ...requestConfig,
     baseURL: `${nodeURL}/code/run` + (isTest ? "/test" : ""),
     method: "POST",
     data: code,
   });
+  
