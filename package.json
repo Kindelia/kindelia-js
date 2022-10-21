@@ -18,7 +18,7 @@
   "repository": "git@github.com:Kindelia/kindelia-js.git",
   "scripts": {
     "build": "tsup src/index.ts --format cjs,esm --dts",
-    "dev": "tsup src/index.ts --watch --format cjs,esm --dts",
+    "dev": "tsup src/index.ts --watch --format cjs,esm --dts --sourcemap",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:all": "jest --coverage",
