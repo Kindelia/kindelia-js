@@ -7,17 +7,37 @@ import { TermJson } from "../types";
 // ==========
 
 export type BraunTree<T> = rustie.Enum<{
-  Node: { value: T; left: BraunTree<T>; right: BraunTree<T> };
+  Node: BraunTreeNode<T>;
   Leaf: null;
 }>;
 
-// TODO: fix order
+type BraunTreeNode<T> = { value: T; left: BraunTree<T>; right: BraunTree<T> };
+
 export const braun_tree_to_array = <T>(tree: BraunTree<T>): T[] =>
-  if_let(tree)("Node")((n) => [
-    n.value,
-    ...braun_tree_to_array(n.left),
-    ...braun_tree_to_array(n.right),
-  ])(() => []);
+  braun_to_array_aux([tree])
+
+const braun_to_array_aux = <T>(ts: BraunTree<T>[]): T[] => {
+  const us: BraunTreeNode<T>[] = [];
+  for (const t of ts) {
+    if_let(t)("Node")((node) => {
+      us.push(node);
+    })(() => {});
+  }
+  if (ts.length == 0) {
+    return [];
+  } else {
+    const roots = us.map(get_value)
+    const lefts = us.map(get_left)
+    const rights = us.map(get_right)
+    return [...roots, ...braun_to_array_aux([...lefts, ...rights])]
+  }
+};
+
+const get_value = <T>(node: BraunTreeNode<T>): T => node.value;
+
+const get_left = <T>(node: BraunTreeNode<T>): BraunTree<T> => node.left;
+
+const get_right = <T>(node: BraunTreeNode<T>): BraunTree<T> => node.right;
 
 // Converstion from Kindelia term
 // ==============================
