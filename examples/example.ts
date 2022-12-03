@@ -1,9 +1,9 @@
 // import * as rustie from 'rustie';
 import { match, if_let } from "rustie";
 
-import * as T from "./types";
-import { num_to_name } from "./name";
-import { braun_term_to_arr } from "./util/braun";
+import * as T from "../src/types";
+import { num_to_name } from "../src/name";
+import { braun_term_to_arr } from "../src/util/braun";
 
 const INPUT = {
   Ok: {
