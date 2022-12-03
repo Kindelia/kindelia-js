@@ -1,7 +1,8 @@
-import axios, { AxiosRequestConfig, AxiosPromise, Axios } from "axios";
-import { Option } from "rustie";
+import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
+import { Option } from 'rustie';
 
-import * as T from "./types";
+import * as T from './types';
+
 export * as types from "./types";
 
 const publicAPI = async <T>(config: AxiosRequestConfig): AxiosPromise<T> => {
@@ -66,34 +67,17 @@ export const sendInteract = (
   {
     nodeURL,
     code,
-    isTest,
+    isPublish,
   }: {
     nodeURL: string;
     code: string;
-    isTest?: boolean;
+    isPublish?: boolean;
   },
   requestConfig?: AxiosRequestConfig
 ): AxiosPromise<T.BlockResultsJson[]> =>
   publicAPI<T.BlockResultsJson[]>({
     ...requestConfig,
-    baseURL: `${nodeURL}/code/run` + (isTest ? "/test" : ""),
+    baseURL: `${nodeURL}/code/${isPublish ? "publish" : "run"}`,
     method: "POST",
     data: code,
   });
-
-// (async () => {
-//   const response = await sendInteract({
-//     nodeURL: "https://node-sfo3.testnet.kindelia.org",
-//     code: `
-//       run {
-//         ask state = (Call 'Fit' {Fit_Act_next #0});
-//         let parsed = (Fit_st_parse state);
-//         (Done parsed)
-//       }
-//     `,
-//   })
-// 
-//   response.data.slice(0, 1).map(block => {
-//     console.log(JSON.stringify(block))
-//   })
-// })()

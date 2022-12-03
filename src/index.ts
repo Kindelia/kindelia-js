@@ -11,11 +11,9 @@ import * as validators from "./validators";
 import * as util from "./util";
 
 export default {
-  ...endpoints,
-  ...validators,
-  ...types,
-  ...name,
-  ...util,
+	...endpoints,
+	...validators,
+	...types,
+	...name,
+	...util,
 };
-
-// import "./example"
